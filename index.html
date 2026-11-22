@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Chess classes for kids. Class fees and donations go to autism causes.">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{color-scheme:light}</style>
+<title>Chess for Awareness</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: booking-site style. White canvas, pill search bar, category strip, photo-first rounded cards, class detail page with a sticky "reserve" card. */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --fg:#222222; --muted:#6a6a6a; --line:#e6e6e6; --hover:#f4f4f4;
+  --accent:#e2475d; --accent-2:#c9304a; --accent-ink:#ffffff;
+  --sq-l:#f1e4cf; --sq-d:#b88b5e; --tile1:#ffe3e3; --tile2:#e3efff; --tile3:#e6f6ea; --tile4:#fff1d6;
+  --anim:#fff8e5; --anim-line:#e0b84a; --shadow:0 6px 20px rgba(0,0,0,.12);
+  --font:"Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121212; --surface:#1c1c1c; --fg:#f2f2f2; --muted:#a8a8a8; --line:#333; --hover:#262626;
+  --accent:#ff5a70; --accent-2:#ff7386; --accent-ink:#ffffff;
+  --sq-l:#cdb892; --sq-d:#7c5a3a; --tile1:#3a2226; --tile2:#1f2a3a; --tile3:#1f3326; --tile4:#3a321f;
+  --anim:#2a2617; --anim-line:#a88b35; --shadow:0 6px 20px rgba(0,0,0,.5); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121212; --surface:#1c1c1c; --fg:#f2f2f2; --muted:#a8a8a8; --line:#333; --hover:#262626;
+  --accent:#ff5a70; --accent-2:#ff7386; --accent-ink:#ffffff;
+  --sq-l:#cdb892; --sq-d:#7c5a3a; --tile1:#3a2226; --tile2:#1f2a3a; --tile3:#1f3326; --tile4:#3a321f;
+  --anim:#2a2617; --anim-line:#a88b35; --shadow:0 6px 20px rgba(0,0,0,.5); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(1.6rem,3.4vw,2.1rem);font-weight:700}
+h2{font-size:1.4rem;font-weight:700}
+h3{font-size:1rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:8px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+
+/* Header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:16px}
+.logo{display:flex;align-items:center;gap:8px;color:var(--accent);font-weight:800;font-size:1.2rem;text-decoration:none;letter-spacing:-.02em}
+.mark{width:32px;height:32px;display:grid;grid-template-columns:1fr 1fr;border-radius:9px;overflow:hidden;outline:1.5px dashed var(--muted);outline-offset:1px}
+.mark i:nth-child(1),.mark i:nth-child(4){background:var(--accent)} .mark i:nth-child(2),.mark i:nth-child(3){background:var(--sq-l)}
+.search{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);background:var(--surface);padding:6px 6px 6px 8px}
+.search label{display:grid;padding:4px 16px;border-right:1px solid var(--line);font-size:.75rem;font-weight:700;cursor:pointer}
+.search label:last-of-type{border-right:0}
+.search select{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.88rem;font-weight:400;padding:0;cursor:pointer}
+.go{width:44px;height:44px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;cursor:pointer;flex:none}
+.right{display:flex;justify-content:flex-end;align-items:center;gap:8px}
+.link{padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:600;font-size:.92rem}
+.link:hover{background:var(--hover)}
+.menu{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 12px;background:var(--surface);cursor:pointer}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--muted);display:grid;place-items:center;color:var(--bg)}
+.dropdown{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:72px;width:240px;background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:8px 0;display:grid}
+.dropdown a,.dropdown p{padding:10px 16px;font-size:.92rem;text-decoration:none}
+.dropdown a:hover{background:var(--hover)}
+.dropdown p{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:4px}
+.headwrap{position:relative}
+
+/* Categories */
+.cats{display:flex;gap:32px;overflow-x:auto;padding-block:16px 0;scrollbar-width:none}
+.cat{display:grid;justify-items:center;gap:6px;padding:4px 2px 12px;border:0;background:none;color:var(--muted);font-size:.8rem;font-weight:600;border-bottom:2px solid transparent;cursor:pointer;flex:none}
+.cat svg{width:26px;height:26px}
+.cat:hover{color:var(--fg);border-bottom-color:var(--line)}
+.cat[aria-pressed="true"]{color:var(--fg);border-bottom-color:var(--fg)}
+
+main{padding-block:24px 64px}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:40px 24px}
+.card{display:grid;gap:10px;text-decoration:none;color:inherit;min-width:0}
+.photo{position:relative;aspect-ratio:1/0.95;max-width:100%;border-radius:14px;overflow:hidden}
+.heart{position:absolute;top:12px;right:12px;width:28px;height:28px;border:0;background:none;cursor:pointer;padding:0}
+.heart svg{width:26px;height:26px;fill:rgba(0,0,0,.45);stroke:#fff;stroke-width:2}
+.heart[aria-pressed="true"] svg{fill:var(--accent)}
+.badge{position:absolute;top:12px;left:12px;background:#fff;color:#222;font-size:.78rem;font-weight:700;padding:5px 10px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.ctext{display:grid;gap:2px}
+.ctop{display:flex;justify-content:space-between;gap:8px}
+.ctext span{color:var(--muted);font-size:.92rem}
+.price{color:var(--fg)!important;margin-top:4px}
+.price b{font-weight:700}
+.empty{color:var(--muted);padding:40px 0}
+
+/* Art tiles (stand-ins for photos) */
+.art{position:absolute;inset:0;display:grid;place-items:center}
+.art .mini{width:58%;aspect-ratio:1;display:grid;grid-template-columns:repeat(4,1fr);border-radius:10px;overflow:hidden;transform:rotate(-8deg);box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.art .mini i{background:var(--sq-d)} .art .mini i:nth-child(8n+1),.art .mini i:nth-child(8n+3),.art .mini i:nth-child(8n+6),.art .mini i:nth-child(8n+8){background:var(--sq-l)}
+.art .piece{position:absolute;font-size:3.6rem;line-height:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25));color:#222}
+
+/* Detail page */
+.dtitle{display:grid;gap:8px;margin-bottom:20px}
+.dsub{display:flex;gap:12px;flex-wrap:wrap;font-size:.92rem;font-weight:600}
+.dsub span{text-decoration:underline}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:clamp(260px,40vw,440px);border-radius:16px;overflow:hidden}
+.gallery>div{position:relative;min-height:0}
+.gallery>div:first-child{grid-row:1/3}
+.detail{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:64px;margin-top:32px;align-items:start}
+.dmain{display:grid;gap:0}
+.dmain>div{padding-block:28px;border-bottom:1px solid var(--line);display:grid;gap:12px}
+.dmain>div:first-child{padding-top:0}
+.host{display:flex;gap:16px;align-items:center}
+.hostpic{width:56px;height:56px;border-radius:50%;background:var(--tile2);display:grid;place-items:center;font-size:1.6rem;flex:none}
+.offers{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px}
+.offers div{display:flex;gap:14px;align-items:center}
+.offers svg{width:24px;height:24px;flex:none}
+.hl{display:grid;gap:18px}
+.hl div{display:grid;grid-template-columns:28px 1fr;gap:16px}
+.hl b{display:block}
+.hl span{color:var(--muted);font-size:.92rem}
+.reserve{position:sticky;top:calc(env(safe-area-inset-top,0px) + 110px);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:24px;display:grid;gap:16px;background:var(--surface)}
+.rprice{font-size:1.35rem;font-weight:700}
+.rprice span{font-size:1rem;font-weight:400}
+.box{border:1px solid var(--muted);border-radius:10px;overflow:hidden;display:grid}
+.box label{display:grid;padding:10px 12px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.box label+label{border-top:1px solid var(--muted)}
+.box select{border:0;background:transparent;color:var(--fg);font:inherit;font-size:.92rem;text-transform:none;letter-spacing:0;padding:2px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 24px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:var(--accent-ink);font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer}
+.btn.full{width:100%}
+.btn.outline{background:transparent;color:var(--fg);border:1px solid var(--fg)}
+.small{font-size:.85rem;color:var(--muted);text-align:center}
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:8px 0;font-weight:600;cursor:pointer;text-decoration:underline}
+
+/* Sign-up (confirm page) */
+.confirm{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:64px;align-items:start}
+.steps{display:grid;gap:0}
+.step{border-bottom:1px solid var(--line);padding-block:24px;display:grid;gap:14px}
+.step h2{font-size:1.2rem}
+.step.locked h2{color:var(--muted)}
+.field{display:grid;gap:4px;border:1px solid var(--muted);border-radius:10px;padding:10px 12px}
+.field span{font-size:.75rem;font-weight:700}
+.field input,.field select,.field textarea{border:0;background:transparent;color:var(--fg);font:inherit;padding:0;width:100%;resize:vertical}
+.field:focus-within{outline:2px solid var(--fg);outline-offset:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{font-size:.85rem;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.92rem}
+.check input{margin-top:4px}
+.err{color:#c13515;font-size:.9rem;font-weight:600}
+.summary{position:sticky;top:calc(env(safe-area-inset-top,0px) + 110px);border:1px solid var(--line);border-radius:14px;padding:24px;display:grid;gap:16px}
+.srow{display:flex;gap:14px;align-items:center;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.sthumb{position:relative;width:110px;aspect-ratio:1;border-radius:10px;overflow:hidden;flex:none}
+.sthumb .piece{font-size:2.2rem}
+.sline{display:flex;justify-content:space-between;gap:12px;font-size:.95rem}
+.sline b{font-weight:700}
+.anim{border:2px dashed var(--anim-line);background:var(--anim);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.anim b{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.anim span{font-size:.88rem;color:var(--muted)}
+.done{max-width:640px;display:grid;gap:16px}
+.notice{background:var(--hover);border-radius:12px;padding:12px 16px;font-size:.9rem}
+.mission{margin-top:56px;border-radius:20px;background:var(--tile1);padding:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.mission>div{display:grid;gap:8px;min-width:0}
+
+footer{background:var(--hover);border-top:1px solid var(--line)}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-block:40px 24px}
+.fgrid div{display:grid;gap:10px;font-size:.9rem;align-content:start}
+.fgrid b{font-size:.9rem}
+.fgrid a{text-decoration:none}
+.fgrid a:hover{text-decoration:underline}
+.fbot{border-top:1px solid var(--line);padding-block:20px;font-size:.85rem;color:var(--muted)}
+
+@media (max-width:980px){.bar{grid-template-columns:1fr auto}.search{grid-column:1/-1;grid-row:2}.detail,.confirm{grid-template-columns:1fr;gap:32px}.reserve,.summary{position:static}}
+@media (max-width:640px){
+  .search label:nth-of-type(n+2){display:none}.search{justify-content:space-between}
+  .link{display:none}.gallery{grid-template-columns:1fr;grid-template-rows:1fr}.gallery>div:not(:first-child){display:none}.gallery>div:first-child{grid-row:auto}
+  .offers,.two,.fgrid,.mission{grid-template-columns:1fr}
+}
+/* ===== Collage animations (torn paper, newspaper scraps, masking tape, 8 fps) ===== */
+.cl{position:relative;aspect-ratio:1;width:100%;max-width:300px;margin:auto;background:#d8b98a;clip-path:polygon(0.0% 0.8%,7.1% 0.4%,14.3% 1.6%,21.4% 0.2%,28.6% 1.3%,35.7% 0.9%,42.9% 0.1%,50.0% 1.3%,57.1% 0.1%,64.3% 1.1%,71.4% 0.2%,78.6% 0.2%,85.7% 1.1%,92.9% 2.1%,100.0% 0.3%,99.4% 7.1%,98.4% 14.3%,97.6% 21.4%,98.6% 28.6%,99.0% 35.7%,97.6% 42.9%,99.9% 50.0%,97.9% 57.1%,99.3% 64.3%,99.6% 71.4%,99.7% 78.6%,99.2% 85.7%,98.0% 92.9%,99.5% 100.0%,92.9% 98.5%,85.7% 98.4%,78.6% 99.1%,71.4% 98.6%,64.3% 99.8%,57.1% 99.9%,50.0% 99.5%,42.9% 98.3%,35.7% 98.9%,28.6% 99.2%,21.4% 98.5%,14.3% 98.9%,7.1% 99.3%,0.0% 98.0%,1.7% 92.9%,0.6% 85.7%,1.4% 78.6%,1.3% 71.4%,2.2% 64.3%,1.8% 57.1%,0.7% 50.0%,2.5% 42.9%,0.3% 35.7%,1.0% 28.6%,1.9% 21.4%,0.4% 14.3%,1.2% 7.1%);overflow:hidden;
+  background-image:radial-gradient(rgba(90,60,20,.10) 1px,transparent 1.4px);background-size:7px 7px}
+.cl .news{position:absolute;background:#efe9dc;clip-path:polygon(0.0% 0.2%,12.5% 4.0%,25.0% 4.6%,37.5% 3.4%,50.0% 5.3%,62.5% 1.9%,75.0% 4.2%,87.5% 3.6%,100.0% 3.5%,97.3% 12.5%,95.0% 25.0%,94.3% 37.5%,97.2% 50.0%,96.0% 62.5%,99.6% 75.0%,95.8% 87.5%,96.1% 100.0%,87.5% 94.0%,75.0% 95.1%,62.5% 98.3%,50.0% 97.7%,37.5% 96.0%,25.0% 99.9%,12.5% 97.2%,0.0% 99.0%,0.7% 87.5%,0.4% 75.0%,4.6% 62.5%,0.8% 50.0%,1.5% 37.5%,2.3% 25.0%,5.2% 12.5%);
+  background-image:repeating-linear-gradient(0deg,transparent 0 5px,rgba(40,40,40,.22) 5px 6px),linear-gradient(90deg,transparent 48%,#efe9dc 48% 52%,transparent 52%)}
+.cl .news.n1{left:6%;top:8%;width:34%;height:26%;transform:rotate(-7deg)}
+.cl .news.n2{right:5%;bottom:7%;width:30%;height:24%;transform:rotate(6deg)}
+.cl .tape{position:absolute;width:30%;height:9%;background:rgba(244,232,190,.88);box-shadow:0 1px 2px rgba(0,0,0,.15);z-index:5;
+  clip-path:polygon(3% 0,97% 4%,100% 50%,96% 100%,2% 96%,0 50%)}
+.cl .tape.t1{left:-4%;top:6%;transform:rotate(-32deg)}
+.cl .tape.t2{right:-5%;top:8%;transform:rotate(30deg)}
+.cl .board{position:absolute;inset:18%;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);transform:rotate(-2deg);
+  box-shadow:3px 4px 0 rgba(60,40,10,.35)}
+.cl .board i{display:block;background:#f5efe2}
+.cl .board i:nth-child(8n+2),.cl .board i:nth-child(8n+4),.cl .board i:nth-child(8n+5),.cl .board i:nth-child(8n+7){background:#7a5a3a;
+  background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.08) 0 2px,transparent 2px 5px)}
+.cl .pc{position:absolute;left:0;top:0;width:25%;height:25%;display:grid;place-items:center;font-size:clamp(24px,8vw,40px);line-height:1;
+  color:#1d1a16;text-shadow:2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,2px 2px #fff,-2px -2px #fff,3px 4px 0 rgba(60,40,10,.35)}
+.cl .pc span{display:block;animation:boil .375s steps(3) infinite}
+@keyframes boil{0%{transform:rotate(-3deg)}33%{transform:rotate(2deg) translateY(-1px)}66%{transform:rotate(0deg) translateX(1px)}}
+.cl .label{position:absolute;left:50%;bottom:4%;transform:translateX(-50%) rotate(-3deg);background:#fff;padding:3px 10px;font:700 .8rem/1.2 Georgia,serif;
+  color:#1d1a16;box-shadow:2px 2px 0 rgba(60,40,10,.35);z-index:6;white-space:nowrap}
+/* A: knight hops in an L, other pieces drop in and settle */
+.clA .kn{transform:translate(300%,0);animation:knHop 4s steps(32) infinite}
+@keyframes knHop{0%,14%{transform:translate(0,300%)}24%{transform:translate(40%,160%) scale(1.25) rotate(-12deg)}34%,52%{transform:translate(100%,100%)}
+  62%{transform:translate(200%,20%) scale(1.25) rotate(12deg)}72%,100%{transform:translate(300%,0)}}
+.clA .pw{transform:translate(100%,300%);animation:dropIn 4s steps(32) infinite}
+.clA .rk{transform:translate(300%,300%);animation:dropIn2 4s steps(32) infinite}
+@keyframes dropIn{0%,70%{transform:translate(100%,-120%) rotate(20deg)}80%{transform:translate(100%,320%) rotate(-6deg)}86%,100%{transform:translate(100%,300%)}}
+@keyframes dropIn2{0%,76%{transform:translate(300%,-120%) rotate(-20deg)}86%{transform:translate(300%,320%) rotate(6deg)}92%,100%{transform:translate(300%,300%)}}
+/* B: lesson preview, a pawn steps forward two squares, then a note gets taped on */
+.clB{max-width:none;height:100%;aspect-ratio:auto;min-height:120px}
+.clB .board{inset:14% 14% 22%}
+.clB .pwB{transform:translate(100%,100%);animation:pawnTwo 3s steps(24) infinite}
+@keyframes pawnTwo{0%,20%{transform:translate(100%,300%)}35%{transform:translate(100%,200%) translateY(-12%)}45%,100%{transform:translate(100%,100%)}}
+.clB .label{animation:noteOn 3s steps(24) infinite}
+@keyframes noteOn{0%,50%{opacity:0;transform:translateX(-50%) rotate(-12deg) scale(1.4)}60%,100%{opacity:1;transform:translateX(-50%) rotate(-3deg) scale(1)}}
+/* C: sign-up success, a pawn reaches the last row and becomes a queen */
+.clC .pwC,.clC .qn{transform:translate(200%,0)}
+.clC .pwC{opacity:0;animation:pawnUp 4s steps(32) infinite}
+@keyframes pawnUp{0%{opacity:1;transform:translate(200%,300%)}15%{opacity:1;transform:translate(200%,200%)}30%{opacity:1;transform:translate(200%,100%)}45%,55%{opacity:1;transform:translate(200%,0)}58%,100%{opacity:0;transform:translate(200%,0)}}
+.clC .qn{animation:queenPop 4s steps(32) infinite}
+@keyframes queenPop{0%,55%{opacity:0;transform:translate(200%,0) scale(.3) rotate(-30deg)}65%{opacity:1;transform:translate(200%,0) scale(1.4) rotate(8deg)}72%,100%{opacity:1;transform:translate(200%,0)}}
+.clC .bits{position:absolute;inset:0;z-index:4;pointer-events:none}
+.clC .bits b{position:absolute;top:-10%;width:9%;height:6%;background:#efe9dc;opacity:0;
+  background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(40,40,40,.3) 3px 4px);animation:scrap 4s steps(32) infinite}
+.clC .bits b:nth-child(2){left:30%;background-color:#e8505b;animation-delay:.1s}
+.clC .bits b:nth-child(1){left:12%}.clC .bits b:nth-child(3){left:55%;animation-delay:.2s}.clC .bits b:nth-child(4){left:78%;background-color:#f4e8be;animation-delay:.05s}
+@keyframes scrap{0%,60%{opacity:0;transform:translateY(0) rotate(0)}65%{opacity:1}100%{opacity:1;transform:translateY(1400%) rotate(540deg)}}
+.anim.has-cl{padding:10px;border-style:solid}
+@media (prefers-reduced-motion:reduce){.clC .pwC,.clC .bits b,.clB .label{animation:none!important}.clB .label{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="wrap headwrap">
+    <div class="bar">
+      <a class="logo" href="#home"><span class="mark" title="Logo placeholder"><i></i><i></i><i></i><i></i></span>chess for awareness</a>
+      <form class="search" id="search" role="search">
+        <label for="s-where">Where<select id="s-where"><option value="">In person or online</option><option>In person</option><option>Online</option></select></label>
+        <label for="s-level">Level<select id="s-level"><option value="">Any level</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
+        <label for="s-age">Age<select id="s-age"><option value="">Any age</option><option value="5">5 to 8</option><option value="9">9 to 12</option><option value="13">13 to 16</option></select></label>
+        <button class="go" type="submit" aria-label="Search classes"><svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="4"><circle cx="13" cy="13" r="9"/><path d="M20 20l9 9"/></svg></button>
+      </form>
+      <div class="right">
+        <a class="link" href="#donate">Donate</a>
+        <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-label="Account menu">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 9h24M4 16h24M4 23h24"/></svg>
+          <span class="avatar"><svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor"><circle cx="16" cy="11" r="7"/><path d="M3 30c2-8 8-11 13-11s11 3 13 11z"/></svg></span>
+        </button>
+      </div>
+    </div>
+    <div class="dropdown" id="menu" hidden>
+      <a href="#signup"><b>Sign up for a class</b></a>
+      <a href="#login" id="loginLink">Log in</a>
+      <a href="#about">About our program</a>
+      <a href="#donate">Donate or volunteer</a>
+      <p id="loginNote" hidden>Parent log-in comes later. For now, families sign up without an account and get details by email.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HOME -->
+  <div id="v-home">
+    <div class="cats" id="cats" role="toolbar" aria-label="Class types"></div>
+    <div style="height:28px"></div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>No classes match those filters. Try "Any level" or "Any age".</p>
+    <p class="hint" style="margin-top:24px">These are example classes. Replace them with your real schedule.</p>
+
+    <section class="mission" id="about">
+      <div>
+        <h2>Every move helps someone</h2>
+        <p>We teach kids chess and raise money for autism causes. The money from our classes, tournaments, and fundraisers goes to nonprofits that support autistic people and their families.</p>
+        <div style="margin-top:8px"><a class="btn" href="#donate">Donate</a></div>
+      </div>
+      <div style="min-width:220px;max-width:300px;width:100%"><div class="cl clA" role="img" aria-label="Paper cut-out knight hops across a chessboard and the pieces settle"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:18%;transform:rotate(-2deg)"><div class="pc kn"><span>♞</span></div><div class="pc pw"><span>♟</span></div><div class="pc rk"><span>♜</span></div></div><div class="label">Every move helps</div></div></div>
+    </section>
+
+    <section class="mission" id="refer" style="background:var(--tile2);margin-top:24px">
+      <div>
+        <h2>Refer a friend, get free classes</h2>
+        <p>If you refer a friend, you can get up to 2 to 3 classes for free. Tell them to mention your child's name when they sign up.</p>
+      </div>
+      <a class="btn" href="#signup">Sign up a friend</a>
+    </section>
+  </div>
+
+  <!-- CLASS DETAIL -->
+  <div id="v-class" hidden></div>
+
+  <!-- SIGN UP -->
+  <div id="v-signup" hidden>
+    <button class="back" type="button" id="suBack">‹ Back</button>
+    <h1 style="margin:8px 0 8px">Confirm and sign up</h1>
+    <div class="confirm">
+      <form class="steps" id="signupForm" name="class-signup" novalidate>
+        <input type="hidden" name="_subject" value="New class sign-up - Chess for Awareness">
+        <input type="hidden" name="_template" value="table">
+        <p hidden><label>Leave this empty: <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
+        <div class="step" data-step="1">
+          <h2>1. Your class</h2>
+          <div class="box">
+            <label for="f-class">Class<select id="f-class" name="class"></select></label>
+            <label for="f-level">Chess experience<select id="f-level" name="experience"><option>Never played</option><option>Knows how pieces move</option><option>Plays full games</option></select></label>
+          </div>
+        </div>
+        <div class="step" data-step="2">
+          <h2>2. About your child</h2>
+          <div class="two">
+            <label class="field" for="f-child"><span>Child's first name</span><input id="f-child" name="child_first_name" autocomplete="off" required></label>
+            <label class="field" for="f-age"><span>Age</span><input id="f-age" name="child_age" type="number" min="4" max="18" required></label>
+          </div>
+          <label class="field" for="f-support"><span>Anything the coach should know? (optional)</span><textarea id="f-support" name="notes_for_coach" rows="2" placeholder="For example: allergies, or a friend they'd like to be grouped with"></textarea></label>
+          <p class="hint">Only your child's coaches see this.</p>
+        </div>
+        <div class="step" data-step="3">
+          <h2>3. Your contact details</h2>
+          <div class="two">
+            <label class="field" for="f-parent"><span>Your name</span><input id="f-parent" name="parent_name" autocomplete="name" required></label>
+            <label class="field" for="f-email"><span>Email</span><input id="f-email" name="email" type="email" autocomplete="email" required></label>
+          </div>
+          <label class="field" for="f-phone"><span>Phone (optional)</span><input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
+          <label class="check" for="f-consent"><input type="checkbox" id="f-consent" name="consent" value="yes" required> I'm this child's parent or guardian, and I agree to the privacy policy.</label>
+        </div>
+        <div class="step" style="border-bottom:0">
+          <p class="err" id="err" hidden></p>
+          <div><button class="btn" type="submit">Confirm sign-up</button></div>
+        </div>
+      </form>
+      <aside class="summary" id="summary"></aside>
+    </div>
+  </div>
+
+  <!-- DONE -->
+  <div id="v-done" hidden>
+    <div class="done">
+      <div style="width:220px;max-width:100%;margin:0 auto 8px"><div class="cl clC" role="img" aria-label="A pawn reaches the last row and becomes a queen"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:18%;transform:rotate(-2deg)"><div class="pc pwC"><span>♟</span></div><div class="pc qn"><span>♛</span></div></div><div class="bits"><b></b><b></b><b></b><b></b></div></div></div>
+      <h1 id="doneTitle">You're signed up!</h1>
+      <p id="doneText"></p>
+            <div><a class="btn outline" href="#home">Browse more classes</a></div>
+    </div>
+  </div>
+
+  <!-- DONATE -->
+  <div id="v-donate" hidden>
+    <div class="done">
+      <h1>Support Chess for Awareness</h1>
+      <p>We raise money for autism causes through chess. Your donation goes to nonprofits that support autistic people and their families.</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px">
+        <div class="anim" style="background:var(--tile2);border-style:solid;border-color:var(--line)"><b>Give</b><span>Donate any amount. It all goes to the autism causes we support.</span></div>
+        <div class="anim" style="background:var(--tile3);border-style:solid;border-color:var(--line)"><b>Play in a fundraiser</b><span>Join a tournament where entry fees go to autism causes.</span></div>
+        <div class="anim" style="background:var(--tile4);border-style:solid;border-color:var(--line)"><b>Volunteer</b><span>Coach a class or help run an event.</span></div>
+      </div>
+      <h2>Where the money goes</h2>
+      <p class="hint">Coming soon: the list of autism nonprofits we donate to.</p>
+      <p class="notice">Donation button placeholder. Connect a payment service before going live.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><b>Classes</b><a href="#home">Browse classes</a><a href="#signup">Sign up</a><a href="#about">How classes work</a></div>
+      <div><b>Get involved</b><a href="#donate">Donate</a><a href="#donate">Volunteer as a coach</a><a href="#donate">Host a fundraiser</a></div>
+      <div><b>Chess for Awareness</b><span>Brambleton Library, Brambleton, VA</span><span><a href="mailto:chessforawareness@gmail.com">chessforawareness@gmail.com</a></span><span><a href="tel:+17037051571">(703) 705-1571</a></span></div>
+    </div>
+    <div class="fbot">© 2026 Chess for Awareness, a nonprofit · Privacy · Terms</div>
+  </div>
+</footer>
+
+<script>
+const ICONS={
+  all:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="24" height="24" rx="3"/><path d="M4 16h24M16 4v24"/></svg>',
+  inperson:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14L16 4l12 10v14H4z"/><path d="M13 28v-8h6v8"/></svg>',
+  online:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="26" height="17" rx="2"/><path d="M11 28h10M16 23v5"/></svg>',
+  beginner:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><circle cx="16" cy="9" r="4"/><path d="M12 14h8l-2 8h-4zM9 28h14l-2-6H11z"/></svg>',
+  sensory:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18a10 10 0 0120 0"/><rect x="4" y="18" width="5" height="8" rx="2"/><rect x="23" y="18" width="5" height="8" rx="2"/></svg>',
+  tournament:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4h12v8a6 6 0 01-12 0zM10 7H5a5 5 0 005 5M22 7h5a5 5 0 01-5 5M16 18v5M11 28h10l-1-5h-8z"/></svg>',
+  family:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3"/><circle cx="22" cy="8" r="3"/><circle cx="16" cy="17" r="2.5"/><path d="M5 28v-9a5 5 0 0110 0M17 28v-9a5 5 0 0110 0M13 28v-4a3 3 0 016 0v4"/></svg>'
+};
+const CATS=[["all","All classes"],["inperson","In person"],["online","Online"],["beginner","First-timers"],["tournament","Tournaments"]];
+const classes=[
+  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",tags:["inperson","beginner","sensory"],seats:4,tile:"--tile1",piece:"♟",badge:"Most popular",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",tags:["inperson","sensory"],seats:2,tile:"--tile2",piece:"♞",badge:"2 spots left",coach:"a Chess for Awareness coach",size:8},
+  {id:"wed-online",name:"Wednesday Online",where:"Online",level:"Beginner",ages:[6,14],when:"Wednesdays · 5:00 to 5:45 PM",tags:["online","beginner"],seats:5,tile:"--tile3",piece:"♝",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson","tournament"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"spring-cup",name:"Kids Spring Cup",where:"In person",level:"Intermediate",ages:[7,16],when:"Sat, April 11 · 10 AM to 1 PM",tags:["inperson","tournament"],seats:12,tile:"--tile2",piece:"♜",badge:"Fundraiser",coach:"Tournament team",size:24}
+];
+const $=id=>document.getElementById(id);
+const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
+const ageText=c=>`Ages ${c.ages[0]} to ${c.ages[1]}`;
+const liked=new Set();
+let cat="all";
+
+$("cats").innerHTML=CATS.map(([k,l])=>`<button class="cat" type="button" data-cat="${k}" aria-pressed="${k===cat}">${ICONS[k]}${l}</button>`).join("");
+$("cats").addEventListener("click",e=>{const b=e.target.closest(".cat");if(!b)return;cat=b.dataset.cat;document.querySelectorAll(".cat").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
+
+function render(){
+  const w=$("s-where").value,l=$("s-level").value,a=+$("s-age").value;
+  const list=classes.filter(c=>(cat==="all"||c.tags.includes(cat))&&(!w||c.where===w)&&(!l||c.level===l)&&(!a||(c.ages[0]<=a+3&&c.ages[1]>=a)));
+  $("grid").innerHTML=list.map(c=>`<a class="card" href="#class-${c.id}">
+    <div class="photo">${art(c)}${c.badge?`<span class="badge">${c.badge}</span>`:""}
+      <button class="heart" type="button" data-like="${c.id}" aria-pressed="${liked.has(c.id)}" aria-label="Save ${c.name}"><svg viewBox="0 0 32 32"><path d="M16 28C7 21 3 16 3 11a6.5 6.5 0 0113-2 6.5 6.5 0 0113 2c0 5-4 10-13 17z"/></svg></button></div>
+    <div class="ctext"><div class="ctop"><h3>${c.name}</h3><span style="color:var(--fg)">${c.seats} spots</span></div>
+      <span>${c.where} · ${c.level} · ${ageText(c)}</span><span>${c.when}</span>
+      <span class="price"><b>$20</b> per class · donated to autism causes</span></div></a>`).join("");
+  $("empty").hidden=list.length>0;
+}
+$("grid").addEventListener("click",e=>{const h=e.target.closest("[data-like]");if(!h)return;e.preventDefault();const id=h.dataset.like;liked.has(id)?liked.delete(id):liked.add(id);h.setAttribute("aria-pressed",liked.has(id))});
+["s-where","s-level","s-age"].forEach(id=>$(id).addEventListener("change",render));
+$("search").addEventListener("submit",e=>{e.preventDefault();location.hash="home";render();$("grid").scrollIntoView({behavior:"smooth"})});
+
+const off=(icon,t)=>`<div>${icon}<span>${t}</span></div>`;
+function detail(c){
+  return `<div class="dtitle"><button class="back" type="button" onclick="location.hash='home'">‹ All classes</button><h1>${c.name}</h1>
+    <div class="dsub"><span>${c.where}</span>·<span>${c.level}</span>·<span>${ageText(c)}</span></div></div>
+    <div class="gallery"><div>${art(c)}</div><div>${art({...c,piece:"♞"},false)}</div><div><div class="art" style="background:var(--tile4)"><span class="piece">♝</span></div></div><div><div class="art" style="background:var(--tile2)"><span class="piece">♜</span></div></div>
+      <div style="background:#c9a878;overflow:hidden"><div class="cl clB" role="img" aria-label="A pawn steps forward two squares in a lesson"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:14% 14% 22%;transform:rotate(-2deg)"><div class="pc pwB"><span>♟</span></div></div><div class="label">Nice move!</div></div></div></div>
+    <div class="detail"><div class="dmain">
+      <div><h2>${c.where} class with ${c.coach}</h2><p class="hint">Up to ${c.size} kids · 45 minutes · ${c.when}</p></div>
+      <div class="hl">
+        <div>${ICONS.tournament}<p><b>Every class gives back</b><span>Money raised through our classes and events goes to autism nonprofits.</span></p></div>
+        <div>${ICONS.family}<p><b>Parents can stay</b><span>Watch from the side or play along.</span></p></div>
+        <div>${ICONS.beginner}<p><b>Matched to your child's level</b><span>Kids practice against each other or our practice app at their own level.</span></p></div>
+      </div>
+      <div><h2>What this class offers</h2><div class="offers">
+        ${off(ICONS.beginner,"A short lesson each class")}${off(ICONS.all,"Boards and pieces provided")}${off(ICONS.online,c.where==="Online"?"Video link sent by email":"Practice app at home")}${off(ICONS.tournament,"Progress stickers")}${off(ICONS.family,"Small groups of 5 to 8 kids")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
+      </div></div>
+    </div>
+    <aside class="reserve"><div class="rprice">$20 <span>per class</span></div>
+      <div class="box"><label for="r-date">Start date<select id="r-date"><option>Next class</option><option>The week after</option></select></label>
+      <label for="r-kids">Children<select id="r-kids"><option>1 child</option><option>2 children</option><option>3 children</option></select></label></div>
+      <a class="btn full" href="#signup" onclick="pick='${c.id}'">Reserve a spot</a>
+      <p class="small">Class fees are donated to autism causes. ${c.seats} spots left.</p></aside></div>`;
+}
+
+let pick=classes[0].id;
+classes.forEach(c=>$("f-class").insertAdjacentHTML("beforeend",`<option value="${c.id}">${c.name} · ${c.when}</option>`));
+function summary(){
+  const c=classes.find(x=>x.id===$("f-class").value);
+  $("summary").innerHTML=`<div class="srow"><div class="sthumb">${art(c)}</div><div><h3>${c.name}</h3><span class="hint">${c.where} · ${c.level} · ${ageText(c)}</span></div></div>
+    <h2 style="font-size:1.1rem">Class details</h2><div class="sline"><span>When</span><span>${c.when}</span></div><div class="sline"><span>Group size</span><span>Up to ${c.size} kids</span></div>
+    <div class="sline" style="border-top:1px solid var(--line);padding-top:16px"><b>Total</b><b>$20</b></div><p class="hint">Payment details come by email. Class fees are donated to autism causes.</p><div style="display:none"></div>`;
+}
+$("f-class").addEventListener("change",summary);
+$("suBack").onclick=()=>history.length>1?history.back():(location.hash="home");
+
+const VIEWS=["home","class","signup","done","donate"];
+function route(){
+  let h=location.hash.slice(1)||"home",v=h;
+  if(h.startsWith("class-")){const c=classes.find(x=>"class-"+x.id===h);if(c){v="class";$("v-class").innerHTML=detail(c);pick=c.id}else v="home"}
+  if(h==="about"||h==="login"){v="home"}
+  if(!VIEWS.includes(v))v="home";
+  if(v==="done"&&!$("doneText").textContent)v="signup";
+  VIEWS.forEach(n=>$("v-"+n).hidden=n!==v);
+  if(v==="signup"){$("f-class").value=pick;summary();$("err").hidden=true}
+  $("menu").hidden=true;$("menuBtn").setAttribute("aria-expanded","false");
+  if(h==="about")$("about").scrollIntoView();else window.scrollTo(0,0);
+  if(h==="login")$("menu").hidden=false,$("loginNote").hidden=false;
+}
+addEventListener("hashchange",route);
+$("menuBtn").onclick=e=>{e.stopPropagation();const m=$("menu");m.hidden=!m.hidden;$("menuBtn").setAttribute("aria-expanded",!m.hidden);$("loginNote").hidden=true};
+$("loginLink").onclick=e=>{e.preventDefault();$("loginNote").hidden=false};
+document.addEventListener("click",e=>{if(!e.target.closest("#menu,#menuBtn"))$("menu").hidden=true});
+
+/* Sign-ups are emailed through FormSubmit (free, no account). To hide the address, swap it for the random code FormSubmit emails after activation. */
+const FORM_ENDPOINT="https://formsubmit.co/ajax/chessforawareness@gmail.com";
+$("signupForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  for(const el of $("signupForm").querySelectorAll("[required]")){
+    const bad=el.type==="checkbox"?!el.checked:(!el.value.trim()||!el.checkValidity());
+    if(bad){
+      const label=el.type==="checkbox"?null:el.closest("label").querySelector("span").textContent;
+      $("err").textContent=el.type==="checkbox"?"Please tick the box to confirm you're the parent or guardian.":(el.type==="email"&&el.value?"Please enter an email like name@example.com.":`Please fill in "${label}".`);
+      $("err").hidden=false;el.focus();return;
+    }
+  }
+  const c=classes.find(x=>x.id===$("f-class").value);
+  const btn=$("signupForm").querySelector('button[type="submit"]');btn.disabled=true;btn.textContent="Sending...";
+  const data=Object.fromEntries(new FormData($("signupForm")));if(data._honey){return}
+  fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
+  .then(r=>r.json().then(j=>{if(!r.ok||String(j.success)==="false")throw new Error(j.message||r.status)}))
+  .then(()=>{
+  $("doneTitle").textContent=`${$("f-child").value.trim()} is signed up!`;
+  $("doneText").textContent=`We saved a spot in ${c.name} (${c.when}, ${c.where.toLowerCase()}). We'll email ${$("f-email").value.trim()} with what to bring to the first class.`;
+  location.hash="done";
+  }).catch(()=>{$("err").textContent="We couldn't send your sign-up. Check your connection and try again.";$("err").hidden=false})
+  .finally(()=>{btn.disabled=false;btn.textContent="Confirm sign-up"});
+});
+render();route();
+</script>
+
+</body>
+</html>
