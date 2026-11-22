@@ -160,6 +160,14 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
 .fgrid b{font-size:.9rem}
 .fgrid a{text-decoration:none}
 .fgrid a:hover{text-decoration:underline}
+.tbox{margin-bottom:24px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px;display:grid;gap:10px;max-width:560px}
+.tbox b{font-size:.95rem}
+.tbox p{margin:0;font-size:.88rem;color:var(--muted)}
+.tbox form{display:flex;gap:8px;flex-wrap:wrap}
+.tbox input[type=email]{flex:1 1 200px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit}
+.tbox button{padding:10px 16px;border-radius:8px;border:1px solid var(--fg);background:var(--fg);color:var(--bg);font:inherit;font-weight:600;cursor:pointer}
+.tbox .tlink{justify-self:start;background:none;color:var(--fg);border:1px solid var(--line)}
+.tbox .tmsg{font-size:.88rem}
 .fbot{border-top:1px solid var(--line);padding-block:20px;font-size:.85rem;color:var(--muted)}
 
 @media (max-width:980px){.bar{grid-template-columns:1fr auto}.search{grid-column:1/-1;grid-row:2}.detail,.confirm{grid-template-columns:1fr;gap:32px}.reserve,.summary{position:static}}
@@ -362,6 +370,17 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
       <div><b>Get involved</b><a href="#donate">Donate</a><a href="#donate">Volunteer as a coach</a><a href="#donate">Host a fundraiser</a></div>
       <div><b>Chess for Awareness</b><span>Brambleton Library, Brambleton, VA</span><span><a href="mailto:chessforawareness@gmail.com">chessforawareness@gmail.com</a></span><span><a href="tel:+17037051571">(703) 705-1571</a></span></div>
     </div>
+    <div class="tbox" id="tbox">
+      <b>Tournament interest</b>
+      <p>Want to hear about future kids chess tournaments? We are not running one right now.</p>
+      <button type="button" class="tlink" id="tOpen" aria-expanded="false">I'm interested</button>
+      <form id="tForm" hidden novalidate>
+        <input type="email" id="tEmail" name="email" required placeholder="Parent or guardian email" aria-label="Email address" autocomplete="email">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <button type="submit" id="tSend">Notify me</button>
+      </form>
+      <p class="tmsg" id="tMsg" role="status" hidden></p>
+    </div>
     <div class="fbot">© 2026 Chess for Awareness, a nonprofit · Privacy · Terms</div>
   </div>
 </footer>
@@ -384,7 +403,6 @@ const classes=[
   {id:"mon-online",name:"Monday Online",where:"Online",level:"Intermediate",ages:[8,14],when:"Mondays · 6:00 to 6:45 PM",tags:["online"],seats:0,tile:"--tile4",piece:"♞",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
   {id:"thu-online",name:"Thursday Online",where:"Online",level:"Beginner",ages:[5,9],when:"Thursdays · 4:30 to 5:15 PM",tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
   {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson","tournament"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
-  {id:"spring-cup",name:"Kids Spring Cup",where:"In person",level:"Intermediate",ages:[7,16],when:"Sat, April 11 · 10 AM to 1 PM",tags:["inperson","tournament"],seats:12,tile:"--tile2",piece:"♜",badge:"Fundraiser",coach:"Tournament team",size:24}
 ];
 const $=id=>document.getElementById(id);
 const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
@@ -488,6 +506,24 @@ $("signupForm").addEventListener("submit",e=>{
   .finally(()=>{btn.disabled=false;btn.textContent="Confirm sign-up"});
 });
 render();route();
+</script>
+<script>
+(function(){
+  const open=document.getElementById("tOpen"),form=document.getElementById("tForm"),email=document.getElementById("tEmail"),msg=document.getElementById("tMsg"),send=document.getElementById("tSend");
+  if(!open)return;
+  const say=t=>{msg.textContent=t;msg.hidden=false};
+  open.addEventListener("click",()=>{form.hidden=false;open.hidden=true;open.setAttribute("aria-expanded","true");say("We will only email you if we set up a tournament.");email.focus()});
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const v=email.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){say("Please enter a valid email address.");email.focus();return}
+    if(form.elements._honey.value)return;
+    send.disabled=true;send.textContent="Sending...";
+    fetch("https://formsubmit.co/ajax/chessforawareness@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({list:"Tournament interest",email:v,_subject:"Tournament interest - Chess for Awareness",_template:"table"})})
+      .then(r=>r.json()).then(j=>{if(String(j.success)==="false")throw 0;form.hidden=true;say("Thanks! We will email you if we set up a tournament.")})
+      .catch(()=>{send.disabled=false;send.textContent="Notify me";say("That did not send. Please try again, or email chessforawareness@gmail.com.")});
+  });
+})();
 </script>
 
 </body>
