@@ -244,7 +244,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
       </div>
     </div>
     <div class="dropdown" id="menu" hidden>
-      <a href="#signup"><b>Join a class waitlist</b></a>
+      <a href="#signup"><b>Sign up for a class</b></a>
       <a href="#login" id="loginLink">Log in</a>
       <a href="#about">About our program</a>
       <a href="#donate">Donate or volunteer</a>
@@ -287,12 +287,12 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
   <!-- SIGN UP -->
   <div id="v-signup" hidden>
     <button class="back" type="button" id="suBack">‹ Back</button>
-    <h1 style="margin:8px 0 8px">Join the waitlist</h1><p class="hint" style="margin:0 0 8px">All classes are sold out right now. Add your child to the waitlist and we will email you as soon as a spot opens.</p>
+    <h1 style="margin:8px 0 8px">Confirm and sign up</h1><p class="hint" style="margin:0 0 8px">In-person classes are open. Online classes are full right now, so choosing one adds your child to the waitlist.</p>
     <div class="confirm">
       <form class="steps" id="signupForm" name="class-signup" novalidate>
-        <input type="hidden" name="_subject" value="New waitlist sign-up - Chess for Awareness">
+        <input type="hidden" name="_subject" value="New sign-up - Chess for Awareness">
         <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="list" value="Waitlist">
+        <input type="hidden" name="list" id="f-list" value="Sign-up">
         <p hidden><label>Leave this empty: <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
         <div class="step" data-step="1">
           <h2>1. Your class</h2>
@@ -321,7 +321,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
         </div>
         <div class="step" style="border-bottom:0">
           <p class="err" id="err" hidden></p>
-          <div><button class="btn" type="submit">Join the waitlist</button></div>
+          <div><button class="btn" type="submit">Confirm sign-up</button></div>
         </div>
       </form>
       <aside class="summary" id="summary"></aside>
@@ -332,7 +332,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
   <div id="v-done" hidden>
     <div class="done">
       <div style="width:220px;max-width:100%;margin:0 auto 8px"><div class="cl clC" role="img" aria-label="A pawn reaches the last row and becomes a queen"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:18%;transform:rotate(-2deg)"><div class="pc pwC"><span>♟</span></div><div class="pc qn"><span>♛</span></div></div><div class="bits"><b></b><b></b><b></b><b></b></div></div></div>
-      <h1 id="doneTitle">You're on the waitlist!</h1>
+      <h1 id="doneTitle">You're signed up!</h1>
       <p id="doneText"></p>
             <div><a class="btn outline" href="#home">Browse more classes</a></div>
     </div>
@@ -378,13 +378,13 @@ const ICONS={
 };
 const CATS=[["all","All classes"],["inperson","In person"],["online","Online"],["beginner","First-timers"],["tournament","Tournaments"]];
 const classes=[
-  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",tags:["inperson","beginner","sensory"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",tags:["inperson","sensory"],seats:0,tile:"--tile2",piece:"♞",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",tags:["inperson","beginner","sensory"],seats:4,tile:"--tile1",piece:"♟",badge:"Most popular",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",tags:["inperson","sensory"],seats:2,tile:"--tile2",piece:"♞",badge:"2 spots left",coach:"a Chess for Awareness coach",size:8},
   {id:"wed-online",name:"Wednesday Online",where:"Online",level:"Beginner",ages:[6,14],when:"Wednesdays · 5:00 to 5:45 PM",tags:["online","beginner"],seats:0,tile:"--tile3",piece:"♝",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
   {id:"mon-online",name:"Monday Online",where:"Online",level:"Intermediate",ages:[8,14],when:"Mondays · 6:00 to 6:45 PM",tags:["online"],seats:0,tile:"--tile4",piece:"♞",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
   {id:"thu-online",name:"Thursday Online",where:"Online",level:"Beginner",ages:[5,9],when:"Thursdays · 4:30 to 5:15 PM",tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson","tournament"],seats:0,tile:"--tile4",piece:"♜",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"spring-cup",name:"Kids Spring Cup",where:"In person",level:"Intermediate",ages:[7,16],when:"Sat, April 11 · 10 AM to 1 PM",tags:["inperson","tournament"],seats:0,tile:"--tile2",piece:"♜",badge:"Sold out",coach:"Tournament team",size:24}
+  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson","tournament"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"spring-cup",name:"Kids Spring Cup",where:"In person",level:"Intermediate",ages:[7,16],when:"Sat, April 11 · 10 AM to 1 PM",tags:["inperson","tournament"],seats:12,tile:"--tile2",piece:"♜",badge:"Fundraiser",coach:"Tournament team",size:24}
 ];
 const $=id=>document.getElementById(id);
 const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
@@ -401,7 +401,7 @@ function render(){
   $("grid").innerHTML=list.map(c=>`<a class="card" href="#class-${c.id}">
     <div class="photo">${art(c)}${c.badge?`<span class="badge">${c.badge}</span>`:""}
       <button class="heart" type="button" data-like="${c.id}" aria-pressed="${liked.has(c.id)}" aria-label="Save ${c.name}"><svg viewBox="0 0 32 32"><path d="M16 28C7 21 3 16 3 11a6.5 6.5 0 0113-2 6.5 6.5 0 0113 2c0 5-4 10-13 17z"/></svg></button></div>
-    <div class="ctext"><div class="ctop"><h3>${c.name}</h3><span style="color:var(--fg);white-space:nowrap">Waitlist open</span></div>
+    <div class="ctext"><div class="ctop"><h3>${c.name}</h3><span style="color:var(--fg);white-space:nowrap">${c.seats===0?"Waitlist open":c.seats+" spots"}</span></div>
       <span>${c.where} · ${c.level} · ${ageText(c)}</span><span>${c.when}</span>
       <span class="price"><b>$20</b> per class · donated to autism causes</span></div></a>`).join("");
   $("empty").hidden=list.length>0;
@@ -430,8 +430,8 @@ function detail(c){
     <aside class="reserve"><div class="rprice">$20 <span>per class</span></div>
       <div class="box"><label for="r-date">Start date<select id="r-date"><option>Next class</option><option>The week after</option></select></label>
       <label for="r-kids">Children<select id="r-kids"><option>1 child</option><option>2 children</option><option>3 children</option></select></label></div>
-      <a class="btn full" href="#signup" onclick="pick='${c.id}'">Join the waitlist</a>
-      <p class="small">This class is sold out. Join the waitlist and we will email you when a spot opens. ${c.where==="In person"?"In-person classes: we take cash for now, and card payments are coming soon.":"Payment details come by email."}</p></aside></div>`;
+      <a class="btn full" href="#signup" onclick="pick='${c.id}'">${c.seats===0?"Join the waitlist":"Reserve a spot"}</a>
+      <p class="small">${c.seats===0?"This class is full. Join the waitlist and we will email you when a spot opens.":"Class fees are donated to autism causes. "+c.seats+" spots left."} ${c.where==="In person"?"We take cash for now, and card payments are coming soon.":"Payment details come by email."}</p></aside></div>`;
 }
 
 let pick=classes[0].id;
@@ -477,15 +477,15 @@ $("signupForm").addEventListener("submit",e=>{
   }
   const c=classes.find(x=>x.id===$("f-class").value);
   const btn=$("signupForm").querySelector('button[type="submit"]');btn.disabled=true;btn.textContent="Sending...";
-  const data=Object.fromEntries(new FormData($("signupForm")));if(data._honey){return}
+  const data=Object.fromEntries(new FormData($("signupForm")));data.list=c.seats===0?"Waitlist":"Sign-up";data._subject=`New ${c.seats===0?"waitlist":"class"} sign-up: ${c.name} - Chess for Awareness`;if(data._honey){return}
   fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
   .then(r=>r.json().then(j=>{if(!r.ok||String(j.success)==="false")throw new Error(j.message||r.status)}))
   .then(()=>{
-  $("doneTitle").textContent=`${$("f-child").value.trim()} is on the waitlist!`;
-  $("doneText").textContent=`${c.name} (${c.when}, ${c.where.toLowerCase()}) is sold out, so we added you to the waitlist. We'll email ${$("f-email").value.trim()} as soon as a spot opens.`;
+  $("doneTitle").textContent=c.seats===0?`${$("f-child").value.trim()} is on the waitlist!`:`${$("f-child").value.trim()} is signed up!`;
+  $("doneText").textContent=c.seats===0?`${c.name} (${c.when}, ${c.where.toLowerCase()}) is full, so we added you to the waitlist. We'll email ${$("f-email").value.trim()} as soon as a spot opens.`:`We saved a spot in ${c.name} (${c.when}, ${c.where.toLowerCase()}). Please bring cash to class. We'll email ${$("f-email").value.trim()} with what to bring to the first class.`;
   location.hash="done";
   }).catch(()=>{$("err").textContent="We couldn't send your sign-up. Check your connection and try again.";$("err").hidden=false})
-  .finally(()=>{btn.disabled=false;btn.textContent="Join the waitlist"});
+  .finally(()=>{btn.disabled=false;btn.textContent="Confirm sign-up"});
 });
 render();route();
 </script>
