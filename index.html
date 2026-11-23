@@ -395,7 +395,11 @@ const classes=[
   {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",mins:45,tags:["inperson"],seats:9,tile:"--tile2",piece:"♞",badge:"",coach:"a Chess for Awareness coach",size:9},
   {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",mins:45,tags:["inperson"],seats:9,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:9},
   {id:"sun-bishops",name:"Sunday Bishops",where:"In person",level:"Beginner",ages:[5,10],when:"Sundays · Time to be announced",mins:0,tags:["inperson","beginner"],seats:9,tile:"--tile2",piece:"♝",badge:"",coach:"a Chess for Awareness coach",size:9},
-  {id:"weekday-online",name:"Weekday Online",where:"Online",level:"All levels",ages:[6,14],when:"Monday to Friday · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:0,tile:"--tile3",piece:"♛",badge:"Sold out",coach:"a Chess for Awareness coach",size:9},
+  {id:"mon-online",name:"Monday Online",where:"Online",level:"All levels",ages:[6,14],when:"Mondays · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:9},
+  {id:"tue-online",name:"Tuesday Online",where:"Online",level:"All levels",ages:[6,14],when:"Tuesdays · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:9,tile:"--tile2",piece:"♞",badge:"",coach:"a Chess for Awareness coach",size:9},
+  {id:"wed-online",name:"Wednesday Online",where:"Online",level:"All levels",ages:[6,14],when:"Wednesdays · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:0,tile:"--tile3",piece:"♝",badge:"Sold out",coach:"a Chess for Awareness coach",size:9},
+  {id:"thu-online",name:"Thursday Online",where:"Online",level:"All levels",ages:[6,14],when:"Thursdays · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:9,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:9},
+  {id:"fri-online",name:"Friday Online",where:"Online",level:"All levels",ages:[6,14],when:"Fridays · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♛",badge:"Sold out",coach:"a Chess for Awareness coach",size:9},
 ];
 const $=id=>document.getElementById(id);
 const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
