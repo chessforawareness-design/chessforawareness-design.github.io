@@ -227,6 +227,77 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
 @keyframes scrap{0%,60%{opacity:0;transform:translateY(0) rotate(0)}65%{opacity:1}100%{opacity:1;transform:translateY(1400%) rotate(540deg)}}
 .anim.has-cl{padding:10px;border-style:solid}
 @media (prefers-reduced-motion:reduce){.clC .pwC,.clC .bits b,.clB .label{animation:none!important}.clB .label{opacity:1}}
+
+
+/* ===== Home page: white opening, chess animation, then classes ===== */
+.open{min-height:max(480px,calc(100svh - 130px));display:grid;place-items:center;text-align:center;background:var(--bg);position:relative}
+.open-in{display:grid;justify-items:center;gap:18px;max-width:680px}
+.open-in>*{animation:up .8s cubic-bezier(.2,.8,.2,1) both}
+.open-in>:nth-child(2){animation-delay:.1s}.open-in>:nth-child(3){animation-delay:.2s}.open-in>:nth-child(4){animation-delay:.3s}.open-in>:nth-child(5){animation-delay:.4s}
+@keyframes up{from{opacity:0;transform:translateY(18px)}}
+.open .omark{width:64px;height:64px}
+.open .omark path:first-child{transform-origin:50% 22%;animation:beat 1.6s ease-in-out infinite}
+.open h1{font-size:clamp(2.2rem,6vw,3.8rem);line-height:1.05;font-weight:800;letter-spacing:-.035em}
+.open h1 span{color:var(--accent)}
+.open p{font-size:clamp(1rem,2.2vw,1.15rem);color:var(--muted);margin:0 auto}
+.open-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.cue{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:grid;justify-items:center;gap:2px;background:none;border:0;color:var(--muted);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:8px}
+.cue svg{width:22px;height:22px;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(6px)}}
+
+.show{min-height:80svh;display:grid;place-items:center;gap:20px;padding-block:48px;text-align:center}
+.show .cap{font-weight:700;font-size:clamp(1.2rem,3vw,1.6rem);letter-spacing:-.02em}
+.show .cap span{display:block;font-size:.95rem;font-weight:500;color:var(--muted);margin-top:4px}
+.hart{position:relative;width:min(420px,82vw);aspect-ratio:1}
+.hboard{position:absolute;inset:14%;display:grid;grid-template-columns:repeat(4,1fr);border-radius:16px;overflow:hidden;transform:rotate(-8deg);box-shadow:0 30px 60px rgba(0,0,0,.18);animation:float 6s ease-in-out infinite}
+.hboard i{background:var(--sq-d)}.hboard i:nth-child(8n+1),.hboard i:nth-child(8n+3),.hboard i:nth-child(8n+6),.hboard i:nth-child(8n+8){background:var(--sq-l)}
+@keyframes float{50%{transform:rotate(-6deg) translateY(-8px)}}
+.hpcs{position:absolute;inset:14%;transform:rotate(-8deg)}
+.hp{position:absolute;width:25%;height:25%;display:grid;place-items:center;font-size:clamp(1.8rem,7vw,2.8rem);line-height:1;color:#222;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
+.hp.r1{left:0;top:0}
+.hp.p1{left:25%;animation:pawnMarch 6s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes pawnMarch{0%,15%{top:75%}30%,55%{top:50%}70%,100%{top:25%}}
+.hp.k1{left:75%;top:75%;animation:knightL 6s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes knightL{0%,40%{left:75%;top:75%}55%{left:62%;top:30%;transform:scale(1.3) rotate(-12deg)}65%,100%{left:50%;top:25%;transform:none}}
+.hheart{position:absolute;width:28%;right:2%;top:0;animation:beat 1.6s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(226,71,93,.35))}
+@keyframes beat{0%,40%,100%{transform:scale(1)}15%{transform:scale(1.14)}25%{transform:scale(.98)}32%{transform:scale(1.08)}}
+.floaty{position:absolute;bottom:6%;font-size:1.2rem;color:var(--accent);opacity:0;animation:rise 5s ease-in infinite}
+.floaty.f1{left:10%}.floaty.f2{left:46%;animation-delay:1.7s;font-size:.95rem}.floaty.f3{left:80%;animation-delay:3.3s}
+@keyframes rise{0%{opacity:0;transform:translateY(0) scale(.6)}15%{opacity:.9}100%{opacity:0;transform:translateY(-240px) scale(1.1) rotate(20deg)}}
+
+.allc{scroll-margin-top:100px;padding-top:24px}
+.allc-head{display:grid;gap:6px;text-align:center;justify-items:center;margin-bottom:8px}
+.allc-head h2{font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:800;letter-spacing:-.03em}
+.allc-head p{color:var(--muted)}
+
+/* cards fall into place */
+@keyframes fall{0%{opacity:0;transform:translateY(-80px) rotate(-4deg)}60%{opacity:1;transform:translateY(8px) rotate(1deg)}80%{transform:translateY(-3px)}100%{opacity:1;transform:none}}
+.grid .card{animation:fall .8s cubic-bezier(.3,.9,.4,1) both}
+.grid .card:nth-child(2){animation-delay:.07s}.grid .card:nth-child(3){animation-delay:.14s}.grid .card:nth-child(4){animation-delay:.21s}.grid .card:nth-child(5){animation-delay:.28s}.grid .card:nth-child(6){animation-delay:.35s}.grid .card:nth-child(7){animation-delay:.42s}.grid .card:nth-child(8){animation-delay:.49s}.grid .card:nth-child(n+9){animation-delay:.56s}
+.js .grid.wait .card{animation-play-state:paused}
+
+/* hover effects */
+.photo{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.art .mini,.art .piece{transition:transform .45s cubic-bezier(.2,1.2,.4,1)}
+.card:hover .photo,.card:focus-visible .photo{transform:translateY(-6px);box-shadow:0 18px 36px rgba(0,0,0,.16)}
+.card:hover .art .mini{transform:rotate(-2deg) scale(1.05)}
+.card:hover .art .piece{transform:translateY(-14px) rotate(-6deg) scale(1.12)}
+.heart{transition:transform .2s}.heart:hover{transform:scale(1.18)}.heart[aria-pressed="true"]{animation:likePop .35s}
+@keyframes likePop{50%{transform:scale(1.4)}}
+.btn{position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.btn:not(.outline):hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(226,71,93,.35)}
+.btn.outline:hover{transform:translateY(-2px);background:var(--surface)}
+.btn:not(.outline)::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s}
+.btn:not(.outline):hover::after{transform:translateX(120%)}
+.cat svg{transition:transform .25s}.cat:hover svg{transform:translateY(-3px) rotate(-6deg)}
+.go{transition:transform .2s}.go:hover{transform:scale(1.08)}
+.logo:hover .mark path:first-child{transform-origin:50% 22%;animation:beat 1.2s ease-in-out infinite}
+
+/* scroll reveal (only when JS runs and motion is OK) */
+@media (prefers-reduced-motion:no-preference){
+  .js .rv{opacity:0;transform:translateY(32px) scale(.97);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+  .js .rv.in{opacity:1;transform:none}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -263,7 +334,28 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
 
   <!-- HOME -->
   <div id="v-home">
-    <div class="cats" id="cats" role="toolbar" aria-label="Class types"></div>
+    <section class="open" aria-labelledby="openTitle">
+      <div class="open-in">
+        <svg class="omark" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 38 C38 28 24 18 32 9 C38 3 46 6 50 13 C54 6 62 3 68 9 C76 18 62 28 50 38Z" fill="#E2475D"/><path d="M41 42 h18 l-3 5 h-12z M44 47 h12 c0 12 4 22 10 30 h-32 c6 -8 10 -18 10 -30z M28 80 h44 a4 4 0 0 1 4 4 v6 h-52 v-6 a4 4 0 0 1 4 -4z" fill="var(--fg)"/></svg>
+        <h1 id="openTitle">Chess classes for kids.<br><span>Every class helps autism causes.</span></h1>
+        <p>We're a nonprofit that teaches kids chess in person at Brambleton Library and online. The money from every $20 class goes to autism nonprofits.</p>
+        <div class="open-cta"><button class="btn" type="button" data-jump="classes">Visit all classes</button><a class="btn outline" href="#signup">Sign up</a></div>
+      </div>
+      <button class="cue" type="button" data-jump="show" aria-label="Scroll down">Scroll<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    </section>
+    <section class="show" id="show" aria-label="Chess animation">
+      <div class="hart rv" aria-hidden="true">
+        <div class="hboard"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="hpcs"><span class="hp r1">♜</span><span class="hp p1">♟</span><span class="hp k1">♞</span></div>
+        <svg class="hheart" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 38 C38 28 24 18 32 9 C38 3 46 6 50 13 C54 6 62 3 68 9 C76 18 62 28 50 38Z" fill="#E2475D"/><path d="M41 42 h18 l-3 5 h-12z M44 47 h12 c0 12 4 22 10 30 h-32 c6 -8 10 -18 10 -30z M28 80 h44 a4 4 0 0 1 4 4 v6 h-52 v-6 a4 4 0 0 1 4 -4z" fill="var(--fg)"/></svg>
+        <span class="floaty f1">♥</span><span class="floaty f2">♥</span><span class="floaty f3">♥</span>
+      </div>
+      <p class="cap rv">Every move helps.<span>Kids learn chess, and the money goes to autism causes.</span></p>
+    </section>
+    <section class="allc" id="classes" aria-labelledby="allcTitle">
+      <div class="allc-head rv"><h2 id="allcTitle">Visit all classes</h2><p>$20 per class · up to 9 kids · weekends in person, weeknights online</p></div>
+    <div style="height:8px"></div>
+    <div class="cats" id="cats" role="toolbar" aria-label="Class types" style="scroll-margin-top:90px"></div>
     <div style="height:28px"></div>
     <div class="grid" id="grid"></div>
     <p class="empty" id="empty" hidden>No classes match those filters. Try "Any level" or "Any age".</p>
@@ -283,6 +375,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
         <p>If you refer a friend, you can get up to 2 to 3 classes for free. Tell them to mention your child's name when they sign up.</p>
       </div>
       <a class="btn" href="#signup">Sign up a friend</a>
+    </section>
     </section>
   </div>
 
@@ -391,8 +484,8 @@ const ICONS={
 };
 const CATS=[["all","All classes"],["inperson","In person"],["online","Online"],["beginner","First-timers"]];
 const classes=[
-  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",mins:45,tags:["inperson","beginner"],seats:9,tile:"--tile1",piece:"♟",badge:"",coach:"a Chess for Awareness coach",size:9},
-  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",mins:45,tags:["inperson"],seats:9,tile:"--tile2",piece:"♞",badge:"",coach:"a Chess for Awareness coach",size:9},
+  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 1:00 to 3:00 PM",mins:120,tags:["inperson","beginner"],seats:9,tile:"--tile1",piece:"♟",badge:"",coach:"a Chess for Awareness coach",size:9},
+  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 3:00 to 5:00 PM",mins:120,tags:["inperson"],seats:9,tile:"--tile2",piece:"♞",badge:"",coach:"a Chess for Awareness coach",size:9},
   {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 1:00 to 3:00 PM",mins:120,tags:["inperson"],seats:9,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:9},
   {id:"sun-bishops",name:"Sunday Bishops",where:"In person",level:"Beginner",ages:[5,10],when:"Sundays · 3:00 to 5:00 PM",mins:120,tags:["inperson","beginner"],seats:9,tile:"--tile2",piece:"♝",badge:"",coach:"a Chess for Awareness coach",size:9},
   {id:"mon-online",name:"Monday Online",where:"Online",level:"All levels",ages:[6,14],when:"Mondays · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:9},
@@ -403,6 +496,7 @@ const classes=[
 ];
 const $=id=>document.getElementById(id);
 const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
+const dur=c=>c.mins===120?"2 hours":c.mins===90?"1 hour 30 minutes":c.mins+" minutes";
 const ageText=c=>`Ages ${c.ages[0]} to ${c.ages[1]}`;
 const liked=new Set();
 let cat="all";
@@ -417,7 +511,7 @@ function render(){
     <div class="photo">${art(c)}${c.badge?`<span class="badge">${c.badge}</span>`:""}
       <button class="heart" type="button" data-like="${c.id}" aria-pressed="${liked.has(c.id)}" aria-label="Save ${c.name}"><svg viewBox="0 0 32 32"><path d="M16 28C7 21 3 16 3 11a6.5 6.5 0 0113-2 6.5 6.5 0 0113 2c0 5-4 10-13 17z"/></svg></button></div>
     <div class="ctext"><div class="ctop"><h3>${c.name}</h3><span style="color:var(--fg);white-space:nowrap">${c.seats===0?"Waitlist open":c.seats+" spots"}</span></div>
-      <span>${c.where} · ${c.level} · ${ageText(c)}</span><span>${c.when}</span>
+      <span>${c.where} · ${c.level} · ${ageText(c)}</span><span>${c.when} · ${dur(c)}</span>
       <span class="price"><b>$20</b> per class · donated to autism causes</span></div></a>`).join("");
   $("empty").hidden=list.length>0;
 }
@@ -432,12 +526,12 @@ function detail(c){
     <div class="gallery"><div>${art(c)}</div><div>${art({...c,piece:"♞"},false)}</div><div><div class="art" style="background:var(--tile4)"><span class="piece">♝</span></div></div><div><div class="art" style="background:var(--tile2)"><span class="piece">♜</span></div></div>
       <div style="background:#c9a878;overflow:hidden"><div class="cl clB" role="img" aria-label="A pawn steps forward two squares in a lesson"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:14% 14% 22%;transform:rotate(-2deg)"><div class="pc pwB"><span>♟</span></div></div><div class="label">Nice move!</div></div></div></div>
     <div class="detail"><div class="dmain">
-      <div><h2>${c.where} class with ${c.coach}</h2><p class="hint">Up to ${c.size} kids · ${c.mins?c.mins+" minutes · ":""}${c.when}</p></div>
+      <div><h2>${c.where} class with ${c.coach}</h2><p class="hint">Up to ${c.size} kids · ${dur(c)} · ${c.when}</p></div>
       <div class="hl">
         <div>${ICONS.tournament}<p><b>Every class gives back</b><span>Money raised through our classes and events goes to autism nonprofits.</span></p></div>
       </div>
       <div><h2>Class details</h2><div class="offers">
-        ${c.mins?off(ICONS.beginner,c.mins+"-minute class"):""}${off(ICONS.all,"$20 per class")}${c.where==="Online"?off(ICONS.online,"Video link sent by email"):""}${off(ICONS.family,"Up to 9 kids per class")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
+        ${off(ICONS.beginner,dur(c)+" per class")}${off(ICONS.all,"$20 per class")}${c.where==="Online"?off(ICONS.online,"Video link sent by email"):""}${off(ICONS.family,"Up to 9 kids per class")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
       </div></div>
     </div>
     <aside class="reserve"><div class="rprice">$20 <span>per class</span></div>
@@ -519,5 +613,20 @@ render();route();
 })();
 </script>
 
+<script>
+(function(){
+  document.documentElement.classList.add("js");
+  document.querySelectorAll("[data-jump]").forEach(function(b){b.addEventListener("click",function(){var t=document.getElementById(b.dataset.jump);if(t)t.scrollIntoView({behavior:"smooth",block:"start"})})});
+  var grid=document.getElementById("grid");
+  document.querySelectorAll("#v-home .mission").forEach(function(e){e.classList.add("rv")});
+  if(grid)grid.classList.add("wait");
+  var t=0;
+  function chk(){t=0;var h=innerHeight*0.88;
+    document.querySelectorAll(".rv:not(.in)").forEach(function(e){if(e.getBoundingClientRect().top<h)e.classList.add("in")});
+    if(grid&&grid.classList.contains("wait")&&grid.getBoundingClientRect().top<h){grid.classList.remove("wait");grid.querySelectorAll(".card").forEach(function(c){c.style.animation="none";c.offsetWidth;c.style.animation=""})}}
+  function q(){if(!t)t=requestAnimationFrame(chk)}
+  addEventListener("scroll",q,{passive:true});addEventListener("resize",q);addEventListener("hashchange",function(){setTimeout(chk,50)});chk();
+})();
+</script>
 </body>
 </html>
