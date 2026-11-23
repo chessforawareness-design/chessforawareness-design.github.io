@@ -391,12 +391,11 @@ const ICONS={
 };
 const CATS=[["all","All classes"],["inperson","In person"],["online","Online"],["beginner","First-timers"]];
 const classes=[
-  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",tags:["inperson","beginner"],seats:4,tile:"--tile1",piece:"♟",badge:"",coach:"a Chess for Awareness coach",size:8},
-  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",tags:["inperson"],seats:2,tile:"--tile2",piece:"♞",badge:"2 spots left",coach:"a Chess for Awareness coach",size:8},
-  {id:"wed-online",name:"Wednesday Online",where:"Online",level:"Beginner",ages:[6,14],when:"Wednesdays · 5:00 to 5:45 PM",tags:["online","beginner"],seats:0,tile:"--tile3",piece:"♝",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"mon-online",name:"Monday Online",where:"Online",level:"Intermediate",ages:[8,14],when:"Mondays · 6:00 to 6:45 PM",tags:["online"],seats:0,tile:"--tile4",piece:"♞",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"thu-online",name:"Thursday Online",where:"Online",level:"Beginner",ages:[5,9],when:"Thursdays · 4:30 to 5:15 PM",tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",mins:45,tags:["inperson","beginner"],seats:4,tile:"--tile1",piece:"♟",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",mins:45,tags:["inperson"],seats:2,tile:"--tile2",piece:"♞",badge:"2 spots left",coach:"a Chess for Awareness coach",size:8},
+  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",mins:45,tags:["inperson"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"sun-bishops",name:"Sunday Bishops",where:"In person",level:"Beginner",ages:[5,10],when:"Sundays · Time to be announced",mins:0,tags:["inperson","beginner"],seats:8,tile:"--tile2",piece:"♝",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"weekday-online",name:"Weekday Online",where:"Online",level:"All levels",ages:[6,14],when:"Monday to Friday · 6:00 to 7:30 PM",mins:90,tags:["online","beginner"],seats:0,tile:"--tile3",piece:"♛",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
 ];
 const $=id=>document.getElementById(id);
 const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
@@ -429,12 +428,12 @@ function detail(c){
     <div class="gallery"><div>${art(c)}</div><div>${art({...c,piece:"♞"},false)}</div><div><div class="art" style="background:var(--tile4)"><span class="piece">♝</span></div></div><div><div class="art" style="background:var(--tile2)"><span class="piece">♜</span></div></div>
       <div style="background:#c9a878;overflow:hidden"><div class="cl clB" role="img" aria-label="A pawn steps forward two squares in a lesson"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:14% 14% 22%;transform:rotate(-2deg)"><div class="pc pwB"><span>♟</span></div></div><div class="label">Nice move!</div></div></div></div>
     <div class="detail"><div class="dmain">
-      <div><h2>${c.where} class with ${c.coach}</h2><p class="hint">Up to ${c.size} kids · 45 minutes · ${c.when}</p></div>
+      <div><h2>${c.where} class with ${c.coach}</h2><p class="hint">Up to ${c.size} kids · ${c.mins?c.mins+" minutes · ":""}${c.when}</p></div>
       <div class="hl">
         <div>${ICONS.tournament}<p><b>Every class gives back</b><span>Money raised through our classes and events goes to autism nonprofits.</span></p></div>
       </div>
       <div><h2>Class details</h2><div class="offers">
-        ${off(ICONS.beginner,"45-minute class")}${off(ICONS.all,"$20 per class")}${c.where==="Online"?off(ICONS.online,"Video link sent by email"):""}${off(ICONS.family,"Small groups of 5 to 8 kids")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
+        ${c.mins?off(ICONS.beginner,c.mins+"-minute class"):""}${off(ICONS.all,"$20 per class")}${c.where==="Online"?off(ICONS.online,"Video link sent by email"):""}${off(ICONS.family,"Small groups of 5 to 8 kids")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
       </div></div>
     </div>
     <aside class="reserve"><div class="rprice">$20 <span>per class</span></div>
@@ -486,13 +485,13 @@ $("signupForm").addEventListener("submit",e=>{
   const c=classes.find(x=>x.id===$("f-class").value);
   const btn=$("signupForm").querySelector('button[type="submit"]');btn.disabled=true;btn.textContent="Sending...";
   const data=Object.fromEntries(new FormData($("signupForm")));data.list=c.seats===0?"Waitlist":"Sign-up";data._subject=`New ${c.seats===0?"waitlist":"class"} sign-up: ${c.name} - Chess for Awareness`;if(data._honey){return}
-  fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
+  fetch(FORM_ENDPOINT,{method:"POST",signal:AbortSignal.timeout(25000),headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
   .then(r=>r.json().then(j=>{if(!r.ok||String(j.success)==="false")throw new Error(j.message||r.status)}))
   .then(()=>{
   $("doneTitle").textContent=c.seats===0?`${$("f-child").value.trim()} is on the waitlist!`:`${$("f-child").value.trim()} is signed up!`;
   $("doneText").textContent=c.seats===0?`${c.name} (${c.when}, ${c.where.toLowerCase()}) is full, so we added you to the waitlist. We'll email ${$("f-email").value.trim()} as soon as a spot opens.`:`We saved a spot in ${c.name} (${c.when}, ${c.where.toLowerCase()}). Please bring cash to class. We'll email ${$("f-email").value.trim()} with what to bring to the first class.`;
   location.hash="done";
-  }).catch(()=>{$("err").textContent="We couldn't send your sign-up. Check your connection and try again.";$("err").hidden=false})
+  }).catch(()=>{$("err").textContent="We couldn't send your sign-up. Please try again, or email chessforawareness@gmail.com or call (703) 705-1571.";$("err").hidden=false})
   .finally(()=>{btn.disabled=false;btn.textContent=classes.find(x=>x.id===$("f-class").value).seats===0?"Join the waitlist":"Confirm sign-up"});
 });
 render();route();
@@ -509,7 +508,7 @@ render();route();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){say("Please enter a valid email address.");email.focus();return}
     if(form.elements._honey.value)return;
     send.disabled=true;send.textContent="Sending...";
-    fetch("https://formsubmit.co/ajax/chessforawareness@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({list:"Tournament interest",email:v,_subject:"Tournament interest - Chess for Awareness",_template:"table"})})
+    fetch("https://formsubmit.co/ajax/chessforawareness@gmail.com",{method:"POST",signal:AbortSignal.timeout(25000),headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({list:"Tournament interest",email:v,_subject:"Tournament interest - Chess for Awareness",_template:"table"})})
       .then(r=>r.json()).then(j=>{if(String(j.success)==="false")throw 0;form.hidden=true;say("Thanks! We will email you if we set up a tournament.")})
       .catch(()=>{send.disabled=false;send.textContent="Notify me";say("That did not send. Please try again, or email chessforawareness@gmail.com.")});
   });
