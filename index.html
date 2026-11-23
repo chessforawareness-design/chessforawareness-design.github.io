@@ -253,10 +253,8 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
     </div>
     <div class="dropdown" id="menu" hidden>
       <a href="#signup"><b>Sign up for a class</b></a>
-      <a href="#login" id="loginLink">Log in</a>
-      <a href="#about">About our program</a>
+      <a href="#about">Our mission</a>
       <a href="#donate">Donate or volunteer</a>
-      <p id="loginNote" hidden>Parent log-in comes later. For now, families sign up without an account and get details by email.</p>
     </div>
   </div>
 </header>
@@ -269,12 +267,11 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
     <div style="height:28px"></div>
     <div class="grid" id="grid"></div>
     <p class="empty" id="empty" hidden>No classes match those filters. Try "Any level" or "Any age".</p>
-    <p class="hint" style="margin-top:24px">These are example classes. Replace them with your real schedule.</p>
 
     <section class="mission" id="about">
       <div>
-        <h2>Every move helps someone</h2>
-        <p>We teach kids chess and raise money for autism causes. The money from our classes, tournaments, and fundraisers goes to nonprofits that support autistic people and their families.</p>
+        <h2>Our mission</h2>
+        <p>We teach kids chess and raise money for autism causes. The money from our classes and fundraisers goes to nonprofits that support autistic people and their families.</p>
         <div style="margin-top:8px"><a class="btn" href="#donate">Donate</a></div>
       </div>
       <div style="min-width:220px;max-width:300px;width:100%"><div class="cl clA" role="img" aria-label="Paper cut-out knight hops across a chessboard and the pieces settle"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:18%;transform:rotate(-2deg)"><div class="pc kn"><span>♞</span></div><div class="pc pw"><span>♟</span></div><div class="pc rk"><span>♜</span></div></div><div class="label">Every move helps</div></div></div>
@@ -295,7 +292,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
   <!-- SIGN UP -->
   <div id="v-signup" hidden>
     <button class="back" type="button" id="suBack">‹ Back</button>
-    <h1 style="margin:8px 0 8px">Confirm and sign up</h1><p class="hint" style="margin:0 0 8px">In-person classes are open. Online classes are full right now, so choosing one adds your child to the waitlist.</p>
+    <h1 style="margin:8px 0 8px">Confirm and sign up</h1><p class="hint" id="suHint" style="margin:0 0 8px">This class has open spots. Fill this out to save your child's spot.</p>
     <div class="confirm">
       <form class="steps" id="signupForm" name="class-signup" novalidate>
         <input type="hidden" name="_subject" value="New sign-up - Chess for Awareness">
@@ -325,7 +322,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
             <label class="field" for="f-email"><span>Email</span><input id="f-email" name="email" type="email" autocomplete="email" required></label>
           </div>
           <label class="field" for="f-phone"><span>Phone (optional)</span><input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
-          <label class="check" for="f-consent"><input type="checkbox" id="f-consent" name="consent" value="yes" required> I'm this child's parent or guardian, and I agree to the privacy policy.</label>
+          <label class="check" for="f-consent"><input type="checkbox" id="f-consent" name="consent" value="yes" required> I'm this child's parent or guardian.</label>
         </div>
         <div class="step" style="border-bottom:0">
           <p class="err" id="err" hidden></p>
@@ -351,14 +348,11 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
     <div class="done">
       <h1>Support Chess for Awareness</h1>
       <p>We raise money for autism causes through chess. Your donation goes to nonprofits that support autistic people and their families.</p>
+      <p><a href="mailto:chessforawareness@gmail.com">chessforawareness@gmail.com</a> · <a href="tel:+17037051571">(703) 705-1571</a></p>
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px">
-        <div class="anim" style="background:var(--tile2);border-style:solid;border-color:var(--line)"><b>Give</b><span>Donate any amount. It all goes to the autism causes we support.</span></div>
-        <div class="anim" style="background:var(--tile3);border-style:solid;border-color:var(--line)"><b>Play in a fundraiser</b><span>Join a tournament where entry fees go to autism causes.</span></div>
-        <div class="anim" style="background:var(--tile4);border-style:solid;border-color:var(--line)"><b>Volunteer</b><span>Coach a class or help run an event.</span></div>
+        <div class="anim" style="background:var(--tile2);border-style:solid;border-color:var(--line)"><b>Give</b><span>Email us to donate. It all goes to autism causes.</span></div>
+        <div class="anim" style="background:var(--tile4);border-style:solid;border-color:var(--line)"><b>Volunteer</b><span>Email us to help with classes.</span></div>
       </div>
-      <h2>Where the money goes</h2>
-      <p class="hint">Coming soon: the list of autism nonprofits we donate to.</p>
-      <p class="notice">Donation button placeholder. Connect a payment service before going live.</p>
     </div>
   </div>
 </main>
@@ -366,8 +360,8 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <div><b>Classes</b><a href="#home">Browse classes</a><a href="#signup">Sign up</a><a href="#about">How classes work</a></div>
-      <div><b>Get involved</b><a href="#donate">Donate</a><a href="#donate">Volunteer as a coach</a><a href="#donate">Host a fundraiser</a></div>
+      <div><b>Classes</b><a href="#home">Browse classes</a><a href="#signup">Sign up</a><a href="#about">Our mission</a></div>
+      <div><b>Get involved</b><a href="#donate">Donate</a><a href="#donate">Volunteer</a></div>
       <div><b>Chess for Awareness</b><span>Brambleton Library, Brambleton, VA</span><span><a href="mailto:chessforawareness@gmail.com">chessforawareness@gmail.com</a></span><span><a href="tel:+17037051571">(703) 705-1571</a></span></div>
     </div>
     <div class="tbox" id="tbox">
@@ -381,7 +375,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
       </form>
       <p class="tmsg" id="tMsg" role="status" hidden></p>
     </div>
-    <div class="fbot">© 2026 Chess for Awareness, a nonprofit · Privacy · Terms</div>
+    <div class="fbot">© 2026 Chess for Awareness, a nonprofit</div>
   </div>
 </footer>
 
@@ -395,14 +389,14 @@ const ICONS={
   tournament:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4h12v8a6 6 0 01-12 0zM10 7H5a5 5 0 005 5M22 7h5a5 5 0 01-5 5M16 18v5M11 28h10l-1-5h-8z"/></svg>',
   family:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="8" r="3"/><circle cx="22" cy="8" r="3"/><circle cx="16" cy="17" r="2.5"/><path d="M5 28v-9a5 5 0 0110 0M17 28v-9a5 5 0 0110 0M13 28v-4a3 3 0 016 0v4"/></svg>'
 };
-const CATS=[["all","All classes"],["inperson","In person"],["online","Online"],["beginner","First-timers"],["tournament","Tournaments"]];
+const CATS=[["all","All classes"],["inperson","In person"],["online","Online"],["beginner","First-timers"]];
 const classes=[
-  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",tags:["inperson","beginner","sensory"],seats:4,tile:"--tile1",piece:"♟",badge:"Most popular",coach:"a Chess for Awareness coach",size:8},
-  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",tags:["inperson","sensory"],seats:2,tile:"--tile2",piece:"♞",badge:"2 spots left",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-pawns",name:"Saturday Pawns",where:"In person",level:"Beginner",ages:[5,8],when:"Saturdays · 10:00 to 10:45 AM",tags:["inperson","beginner"],seats:4,tile:"--tile1",piece:"♟",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"sat-knights",name:"Saturday Knights",where:"In person",level:"Intermediate",ages:[7,12],when:"Saturdays · 11:00 to 11:45 AM",tags:["inperson"],seats:2,tile:"--tile2",piece:"♞",badge:"2 spots left",coach:"a Chess for Awareness coach",size:8},
   {id:"wed-online",name:"Wednesday Online",where:"Online",level:"Beginner",ages:[6,14],when:"Wednesdays · 5:00 to 5:45 PM",tags:["online","beginner"],seats:0,tile:"--tile3",piece:"♝",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
   {id:"mon-online",name:"Monday Online",where:"Online",level:"Intermediate",ages:[8,14],when:"Mondays · 6:00 to 6:45 PM",tags:["online"],seats:0,tile:"--tile4",piece:"♞",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
   {id:"thu-online",name:"Thursday Online",where:"Online",level:"Beginner",ages:[5,9],when:"Thursdays · 4:30 to 5:15 PM",tags:["online","beginner"],seats:0,tile:"--tile1",piece:"♟",badge:"Sold out",coach:"a Chess for Awareness coach",size:8},
-  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson","tournament"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
+  {id:"sun-rooks",name:"Sunday Rooks",where:"In person",level:"Advanced",ages:[9,16],when:"Sundays · 2:00 to 2:45 PM",tags:["inperson"],seats:3,tile:"--tile4",piece:"♜",badge:"",coach:"a Chess for Awareness coach",size:8},
 ];
 const $=id=>document.getElementById(id);
 const art=(c,mini=true)=>`<div class="art" style="background:var(${c.tile})">${mini?'<div class="mini">'+"<i></i>".repeat(16)+'</div>':''}<span class="piece">${c.piece}</span></div>`;
@@ -438,16 +432,12 @@ function detail(c){
       <div><h2>${c.where} class with ${c.coach}</h2><p class="hint">Up to ${c.size} kids · 45 minutes · ${c.when}</p></div>
       <div class="hl">
         <div>${ICONS.tournament}<p><b>Every class gives back</b><span>Money raised through our classes and events goes to autism nonprofits.</span></p></div>
-        <div>${ICONS.family}<p><b>Parents can stay</b><span>Watch from the side or play along.</span></p></div>
-        <div>${ICONS.beginner}<p><b>Matched to your child's level</b><span>Kids practice against each other or our practice app at their own level.</span></p></div>
       </div>
-      <div><h2>What this class offers</h2><div class="offers">
-        ${off(ICONS.beginner,"A short lesson each class")}${off(ICONS.all,"Boards and pieces provided")}${off(ICONS.online,c.where==="Online"?"Video link sent by email":"Practice app at home")}${off(ICONS.tournament,"Progress stickers")}${off(ICONS.family,"Small groups of 5 to 8 kids")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
+      <div><h2>Class details</h2><div class="offers">
+        ${off(ICONS.beginner,"45-minute class")}${off(ICONS.all,"$20 per class")}${c.where==="Online"?off(ICONS.online,"Video link sent by email"):""}${off(ICONS.family,"Small groups of 5 to 8 kids")}${off(ICONS.inperson,c.where==="Online"?"Join from home":"At Brambleton Library")}
       </div></div>
     </div>
     <aside class="reserve"><div class="rprice">$20 <span>per class</span></div>
-      <div class="box"><label for="r-date">Start date<select id="r-date"><option>Next class</option><option>The week after</option></select></label>
-      <label for="r-kids">Children<select id="r-kids"><option>1 child</option><option>2 children</option><option>3 children</option></select></label></div>
       <a class="btn full" href="#signup" onclick="pick='${c.id}'">${c.seats===0?"Join the waitlist":"Reserve a spot"}</a>
       <p class="small">${c.seats===0?"This class is full. Join the waitlist and we will email you when a spot opens.":"Class fees are donated to autism causes. "+c.seats+" spots left."} ${c.where==="In person"?"We take cash for now, and card payments are coming soon.":"Payment details come by email."}</p></aside></div>`;
 }
@@ -456,6 +446,8 @@ let pick=classes[0].id;
 classes.forEach(c=>$("f-class").insertAdjacentHTML("beforeend",`<option value="${c.id}">${c.name} · ${c.when}</option>`));
 function summary(){
   const c=classes.find(x=>x.id===$("f-class").value);
+  $("suHint").textContent=c.seats===0?"This online class is full right now, so this form adds your child to the waitlist. We will email you when a spot opens.":"This class has open spots. Fill this out to save your child's spot.";
+  {const b=$("signupForm").querySelector('button[type="submit"]');if(b&&!b.disabled)b.textContent=c.seats===0?"Join the waitlist":"Confirm sign-up"}
   $("summary").innerHTML=`<div class="srow"><div class="sthumb">${art(c)}</div><div><h3>${c.name}</h3><span class="hint">${c.where} · ${c.level} · ${ageText(c)}</span></div></div>
     <h2 style="font-size:1.1rem">Class details</h2><div class="sline"><span>When</span><span>${c.when}</span></div><div class="sline"><span>Group size</span><span>Up to ${c.size} kids</span></div>
     <div class="sline" style="border-top:1px solid var(--line);padding-top:16px"><b>Total</b><b>$20</b></div><p class="hint">${c.where==="In person"?"Pay in cash at class for now. Card payments are coming soon.":"Payment details come by email."} Class fees are donated to autism causes.</p><div style="display:none"></div>`;
@@ -474,11 +466,9 @@ function route(){
   if(v==="signup"){$("f-class").value=pick;summary();$("err").hidden=true}
   $("menu").hidden=true;$("menuBtn").setAttribute("aria-expanded","false");
   if(h==="about")$("about").scrollIntoView();else window.scrollTo(0,0);
-  if(h==="login")$("menu").hidden=false,$("loginNote").hidden=false;
 }
 addEventListener("hashchange",route);
-$("menuBtn").onclick=e=>{e.stopPropagation();const m=$("menu");m.hidden=!m.hidden;$("menuBtn").setAttribute("aria-expanded",!m.hidden);$("loginNote").hidden=true};
-$("loginLink").onclick=e=>{e.preventDefault();$("loginNote").hidden=false};
+$("menuBtn").onclick=e=>{e.stopPropagation();const m=$("menu");m.hidden=!m.hidden;$("menuBtn").setAttribute("aria-expanded",!m.hidden)};
 document.addEventListener("click",e=>{if(!e.target.closest("#menu,#menuBtn"))$("menu").hidden=true});
 
 /* Sign-ups are emailed through FormSubmit (free, no account). To hide the address, swap it for the random code FormSubmit emails after activation. */
@@ -503,7 +493,7 @@ $("signupForm").addEventListener("submit",e=>{
   $("doneText").textContent=c.seats===0?`${c.name} (${c.when}, ${c.where.toLowerCase()}) is full, so we added you to the waitlist. We'll email ${$("f-email").value.trim()} as soon as a spot opens.`:`We saved a spot in ${c.name} (${c.when}, ${c.where.toLowerCase()}). Please bring cash to class. We'll email ${$("f-email").value.trim()} with what to bring to the first class.`;
   location.hash="done";
   }).catch(()=>{$("err").textContent="We couldn't send your sign-up. Check your connection and try again.";$("err").hidden=false})
-  .finally(()=>{btn.disabled=false;btn.textContent="Confirm sign-up"});
+  .finally(()=>{btn.disabled=false;btn.textContent=classes.find(x=>x.id===$("f-class").value).seats===0?"Join the waitlist":"Confirm sign-up"});
 });
 render();route();
 </script>
