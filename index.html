@@ -298,6 +298,20 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
   .js .rv{opacity:0;transform:translateY(32px) scale(.97);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
   .js .rv.in{opacity:1;transform:none}
 }
+
+/* front page is one screen; classes are their own page */
+.open{min-height:max(460px,calc(100svh - 130px));grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;text-align:left;place-items:center start}
+.open-in{justify-items:start}
+.open-in p{margin:0}
+.open-cta{justify-content:flex-start}
+.open .hart{width:min(400px,100%);justify-self:center}
+#v-classes .allc{padding-top:8px}
+@media (max-width:760px){
+  .open{grid-template-columns:1fr;gap:8px;text-align:center;place-items:center;min-height:auto;padding-block:16px 32px}
+  .open-in{justify-items:center}.open-cta{justify-content:center}
+  .open .hart{width:min(220px,60vw);order:-1}
+  .open .omark{display:none}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -323,7 +337,8 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
       </div>
     </div>
     <div class="dropdown" id="menu" hidden>
-      <a href="#signup"><b>Sign up for a class</b></a>
+      <a href="#classes"><b>All classes</b></a>
+      <a href="#signup">Sign up for a class</a>
       <a href="#about">Our mission</a>
       <a href="#donate">Donate or volunteer</a>
     </div>
@@ -339,20 +354,20 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
         <svg class="omark" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 38 C38 28 24 18 32 9 C38 3 46 6 50 13 C54 6 62 3 68 9 C76 18 62 28 50 38Z" fill="#E2475D"/><path d="M41 42 h18 l-3 5 h-12z M44 47 h12 c0 12 4 22 10 30 h-32 c6 -8 10 -18 10 -30z M28 80 h44 a4 4 0 0 1 4 4 v6 h-52 v-6 a4 4 0 0 1 4 -4z" fill="var(--fg)"/></svg>
         <h1 id="openTitle">Chess classes for kids.<br><span>Every class helps autism causes.</span></h1>
         <p>We're a nonprofit that teaches kids chess in person at Brambleton Library and online. The money from every $20 class goes to autism nonprofits.</p>
-        <div class="open-cta"><button class="btn" type="button" data-jump="classes">Visit all classes</button><a class="btn outline" href="#signup">Sign up</a></div>
+        <div class="open-cta"><button class="btn" type="button" data-go="classes">Visit all classes</button><a class="btn outline" href="#signup">Sign up</a></div>
       </div>
-      <button class="cue" type="button" data-jump="show" aria-label="Scroll down">Scroll<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
-    </section>
-    <section class="show" id="show" aria-label="Chess animation">
-      <div class="hart rv" aria-hidden="true">
+      <div class="hart" aria-hidden="true">
         <div class="hboard"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <div class="hpcs"><span class="hp r1">♜</span><span class="hp p1">♟</span><span class="hp k1">♞</span></div>
         <svg class="hheart" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 38 C38 28 24 18 32 9 C38 3 46 6 50 13 C54 6 62 3 68 9 C76 18 62 28 50 38Z" fill="#E2475D"/><path d="M41 42 h18 l-3 5 h-12z M44 47 h12 c0 12 4 22 10 30 h-32 c6 -8 10 -18 10 -30z M28 80 h44 a4 4 0 0 1 4 4 v6 h-52 v-6 a4 4 0 0 1 4 -4z" fill="var(--fg)"/></svg>
         <span class="floaty f1">♥</span><span class="floaty f2">♥</span><span class="floaty f3">♥</span>
       </div>
-      <p class="cap rv">Every move helps.<span>Kids learn chess, and the money goes to autism causes.</span></p>
     </section>
-    <section class="allc" id="classes" aria-labelledby="allcTitle">
+  </div>
+
+  <!-- CLASSES -->
+  <div id="v-classes" hidden>
+    <section class="allc" id="allc" aria-labelledby="allcTitle">
       <div class="allc-head rv"><h2 id="allcTitle">Visit all classes</h2><p>$20 per class · up to 9 kids · weekends in person, weeknights online</p></div>
     <div style="height:8px"></div>
     <div class="cats" id="cats" role="toolbar" aria-label="Class types" style="scroll-margin-top:90px"></div>
@@ -432,7 +447,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
       <div style="width:220px;max-width:100%;margin:0 auto 8px"><div class="cl clC" role="img" aria-label="A pawn reaches the last row and becomes a queen"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:18%;transform:rotate(-2deg)"><div class="pc pwC"><span>♟</span></div><div class="pc qn"><span>♛</span></div></div><div class="bits"><b></b><b></b><b></b><b></b></div></div></div>
       <h1 id="doneTitle">You're signed up!</h1>
       <p id="doneText"></p>
-            <div><a class="btn outline" href="#home">Browse more classes</a></div>
+            <div><a class="btn outline" href="#classes">Browse more classes</a></div>
     </div>
   </div>
 
@@ -453,7 +468,7 @@ footer{background:var(--hover);border-top:1px solid var(--line)}
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <div><b>Classes</b><a href="#home">Browse classes</a><a href="#signup">Sign up</a><a href="#about">Our mission</a></div>
+      <div><b>Classes</b><a href="#classes">Browse classes</a><a href="#signup">Sign up</a><a href="#about">Our mission</a></div>
       <div><b>Get involved</b><a href="#donate">Donate</a><a href="#donate">Volunteer</a></div>
       <div><b>Chess for Awareness</b><span>Brambleton Library, Brambleton, VA</span><span><a href="mailto:chessforawareness@gmail.com">chessforawareness@gmail.com</a></span><span><a href="tel:+17037051571">(703) 705-1571</a></span></div>
     </div>
@@ -517,11 +532,11 @@ function render(){
 }
 $("grid").addEventListener("click",e=>{const h=e.target.closest("[data-like]");if(!h)return;e.preventDefault();const id=h.dataset.like;liked.has(id)?liked.delete(id):liked.add(id);h.setAttribute("aria-pressed",liked.has(id))});
 ["s-where","s-level","s-age"].forEach(id=>$(id).addEventListener("change",render));
-$("search").addEventListener("submit",e=>{e.preventDefault();location.hash="home";render();$("grid").scrollIntoView({behavior:"smooth"})});
+$("search").addEventListener("submit",e=>{e.preventDefault();location.hash="classes";render()});
 
 const off=(icon,t)=>`<div>${icon}<span>${t}</span></div>`;
 function detail(c){
-  return `<div class="dtitle"><button class="back" type="button" onclick="location.hash='home'">‹ All classes</button><h1>${c.name}</h1>
+  return `<div class="dtitle"><button class="back" type="button" onclick="location.hash='classes'">‹ All classes</button><h1>${c.name}</h1>
     <div class="dsub"><span>${c.where}</span>·<span>${c.level}</span>·<span>${ageText(c)}</span></div></div>
     <div class="gallery"><div>${art(c)}</div><div>${art({...c,piece:"♞"},false)}</div><div><div class="art" style="background:var(--tile4)"><span class="piece">♝</span></div></div><div><div class="art" style="background:var(--tile2)"><span class="piece">♜</span></div></div>
       <div style="background:#c9a878;overflow:hidden"><div class="cl clB" role="img" aria-label="A pawn steps forward two squares in a lesson"><div class="news n1"></div><div class="news n2"></div><div class="tape t1"></div><div class="tape t2"></div><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pcs" style="position:absolute;inset:14% 14% 22%;transform:rotate(-2deg)"><div class="pc pwB"><span>♟</span></div></div><div class="label">Nice move!</div></div></div></div>
@@ -550,16 +565,17 @@ function summary(){
     <div class="sline" style="border-top:1px solid var(--line);padding-top:16px"><b>Total</b><b>$20</b></div><p class="hint">${c.where==="In person"?"Pay in cash at class for now. Card payments are coming soon.":"Payment details come by email."} Class fees are donated to autism causes.</p><div style="display:none"></div>`;
 }
 $("f-class").addEventListener("change",summary);
-$("suBack").onclick=()=>history.length>1?history.back():(location.hash="home");
+$("suBack").onclick=()=>history.length>1?history.back():(location.hash="classes");
 
-const VIEWS=["home","class","signup","done","donate"];
+const VIEWS=["home","classes","class","signup","done","donate"];
 function route(){
   let h=location.hash.slice(1)||"home",v=h;
   if(h.startsWith("class-")){const c=classes.find(x=>"class-"+x.id===h);if(c){v="class";$("v-class").innerHTML=detail(c);pick=c.id}else v="home"}
-  if(h==="about"||h==="login"){v="home"}
+  if(h==="about"||h==="login"){v="classes"}
   if(!VIEWS.includes(v))v="home";
   if(v==="done"&&!$("doneText").textContent)v="signup";
   VIEWS.forEach(n=>$("v-"+n).hidden=n!==v);
+  if(v==="classes")render();
   if(v==="signup"){$("f-class").value=pick;summary();$("err").hidden=true}
   $("menu").hidden=true;$("menuBtn").setAttribute("aria-expanded","false");
   if(h==="about")$("about").scrollIntoView();else window.scrollTo(0,0);
@@ -616,9 +632,10 @@ render();route();
 <script>
 (function(){
   document.documentElement.classList.add("js");
+  document.querySelectorAll("[data-go]").forEach(function(b){b.addEventListener("click",function(){location.hash=b.dataset.go})});
   document.querySelectorAll("[data-jump]").forEach(function(b){b.addEventListener("click",function(){var t=document.getElementById(b.dataset.jump);if(t)t.scrollIntoView({behavior:"smooth",block:"start"})})});
   var grid=document.getElementById("grid");
-  document.querySelectorAll("#v-home .mission").forEach(function(e){e.classList.add("rv")});
+  document.querySelectorAll("#v-classes .mission").forEach(function(e){e.classList.add("rv")});
   if(grid)grid.classList.add("wait");
   var t=0;
   function chk(){t=0;var h=innerHeight*0.88;
